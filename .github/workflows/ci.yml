@@ -1,0 +1,62 @@
+name: ForgeAI CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  java-backend:
+    name: Java 21 Spring Boot API & Worker
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: .
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: maven
+      - name: Build and test Spring Boot API & Worker
+        run: mvn -B clean test package
+
+  python-rag:
+    name: Python FastAPI RAG Service
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: services/rag
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install dependencies and run tests
+        run: |
+          pip install -r requirements.txt pytest httpx
+          pytest
+
+  web-frontend:
+    name: Next.js Web Frontend
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/web
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: apps/web/package-lock.json
+      - name: Install, lint, and build Next.js
+        run: |
+          npm ci
+          npm run lint
+          npm run build

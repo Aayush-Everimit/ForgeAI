@@ -1,28 +1,138 @@
 services:
-  web:
-    build:
-      context: ../apps/web
-    ports:
-      - "3000:3000"
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-forgeai}
+      POSTGRES_USER: ${DATABASE_USERNAME:-forgeai}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:-forgeai}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DATABASE_USERNAME:-forgeai} -d ${POSTGRES_DB:-forgeai}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - forgeai_internal
 
-  api:
-    build:
-      context: ../services/api
-    ports:
-      - "4000:4000"
-    env_file:
-      - ../.env
+  redis:
+    image: redis:7-alpine
+    command: ["redis-server", "--save", "", "--appendonly", "no"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    networks:
+      - forgeai_internal
+
+  qdrant:
+    image: qdrant/qdrant:v1.13.4
+    volumes:
+      - qdrant_data:/qdrant/storage
+    healthcheck:
+      test: ["CMD-SHELL", "bash -c ':> /dev/tcp/127.0.0.1/6333' || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks:
+      - forgeai_internal
 
   rag:
     build:
       context: ../services/rag
-    ports:
-      - "8000:8000"
     env_file:
-      - ../.env
+      - path: ../.env
+        required: false
+    environment:
+      RAG_PORT: 8000
+      QDRANT_URL: http://qdrant:6333
+    depends_on:
+      qdrant:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - forgeai_internal
+
+  api:
+    build:
+      context: ..
+      dockerfile: services/api/Dockerfile
+    ports:
+      - "${API_PORT:-4000}:4000"
+    env_file:
+      - path: ../.env
+        required: false
+    environment:
+      API_PORT: 4000
+      DATABASE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB:-forgeai}
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      RAG_BASE_URL: http://rag:8000
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      rag:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:4000/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks:
+      - forgeai_internal
 
   jobs:
     build:
-      context: ../workers/jobs
+      context: ..
+      dockerfile: workers/jobs/Dockerfile
     env_file:
-      - ../.env
+      - path: ../.env
+        required: false
+    environment:
+      WORKER_PORT: 4001
+      DATABASE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB:-forgeai}
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      RAG_BASE_URL: http://rag:8000
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      rag:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:4001/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks:
+      - forgeai_internal
+
+  web:
+    build:
+      context: ../apps/web
+    ports:
+      - "${WEB_PORT:-3000}:3000"
+    environment:
+      NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL:-http://localhost:4000}
+    depends_on:
+      api:
+        condition: service_healthy
+    networks:
+      - forgeai_internal
+
+volumes:
+  postgres_data:
+  qdrant_data:
+
+networks:
+  forgeai_internal:
+    driver: bridge

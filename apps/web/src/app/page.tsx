@@ -1,66 +1,33 @@
-import Image from "next/image";
 import styles from "./page.module.css";
+import { forgeAiApi } from "../lib/api";
 
 export default function Home() {
+  const loginUrl = forgeAiApi.getGitHubLoginUrl();
+
   return (
     <div className={styles.page}>
       <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
         <div className={styles.intro}>
-          <h1>
-            To get started, edit the{" "}
-            <code className={styles.code}>page.tsx</code> file.
-          </h1>
+          <h1>ForgeAI Engineering Workspace</h1>
           <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
+            Persistent approved project context, source-grounded RAG evidence,
+            and portable 5-part handoff prompts powered by the{" "}
+            <code className={styles.code}>Java 21 + Spring Boot</code> API (
+            <code className={styles.code}>/api/v1</code>) and{" "}
+            <code className={styles.code}>Python FastAPI</code> RAG service.
           </p>
         </div>
         <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
+          <a className={styles.primary} href={loginUrl}>
+            Sign in with GitHub OAuth
           </a>
           <a
             className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
+            href="http://localhost:4000/health"
             target="_blank"
             rel="noopener noreferrer"
           >
-            Documentation
+            API Health Probe
           </a>
         </div>
       </main>

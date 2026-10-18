@@ -26,7 +26,7 @@ Start with roughly 100 versioned, manually verified questions. Each item records
 - Reranker/hybrid uplift against a frozen baseline.
 
 ## Tests
-Unit tests for business logic and prompt assembly; integration tests for PostgreSQL/Redis/Qdrant; contract tests for Node/FastAPI; end-to-end workflows; security tests; RAG evaluations; lifecycle and restore drills.
+Unit tests for business logic and prompt assembly; integration tests for PostgreSQL/Redis/Qdrant and Spring Security boundaries; contract tests for Spring Boot/FastAPI; end-to-end workflows; security tests; RAG evaluations; lifecycle and restore drills.
 
 Failure injection must cover duplicate jobs, worker restart, database outage, Qdrant partial failure, extension/expiry race, reminder after deletion, stale ingestion, index drift and repeated permanent errors.
 

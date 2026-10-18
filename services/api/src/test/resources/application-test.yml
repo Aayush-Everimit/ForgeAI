@@ -1,0 +1,23 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:forgeai_api_test;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DEFAULT_NULL_ORDERING=HIGH;DB_CLOSE_DELAY=-1
+    username: sa
+    password: ""
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+forgeai:
+  rag:
+    base-url: http://localhost:19999
+    internal-token: test-internal-token
+    connect-timeout-ms: 150
+    read-timeout-ms: 150
+    max-retries: 1
+  security:
+    kek-secret: test-kek-secret-32-bytes-minimum-key!
+    kek-key-id: kek-test-v1
