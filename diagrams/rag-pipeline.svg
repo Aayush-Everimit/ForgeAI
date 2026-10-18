@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="970" height="420" viewBox="0 0 970 420">
+<title>Advanced RAG Pipeline</title><defs><marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#475569"/></marker><style>
+.bg{fill:#f8fafc} .b{fill:#fff;stroke:#334155;stroke-width:1.5;rx:12} .blue{fill:#e0f2fe;stroke:#0284c7;stroke-width:1.5;rx:12} .green{fill:#dcfce7;stroke:#16a34a;stroke-width:1.5;rx:12} .purple{fill:#f3e8ff;stroke:#9333ea;stroke-width:1.5;rx:12} .amber{fill:#fef3c7;stroke:#d97706;stroke-width:1.5;rx:12} .red{fill:#fee2e2;stroke:#dc2626;stroke-width:1.5;rx:12} .t{font:700 20px Arial;fill:#0f172a} .l{font:700 14px Arial;fill:#0f172a} .s{font:12px Arial;fill:#334155} .line{stroke:#475569;stroke-width:1.7;fill:none;marker-end:url(#a)} .dash{stroke:#64748b;stroke-width:1.4;stroke-dasharray:6 5;fill:none;marker-end:url(#a)}
+</style></defs><rect width="100%" height="100%" class="bg"/>
+<text x="30" y="38" class="t">Advanced RAG Pipeline</text>
+<rect x="35" y="75" width="190" height="65" class="blue"/><text x="130" y="101" text-anchor="middle" class="l">Authorized Sources</text><text x="130" y="120" text-anchor="middle" class="s">Approved knowledge/GitHub</text>
+<rect x="270" y="75" width="190" height="65" class="purple"/><text x="365" y="101" text-anchor="middle" class="l">Parse + Chunk</text><text x="365" y="120" text-anchor="middle" class="s">Preserve structure</text>
+<rect x="505" y="75" width="190" height="65" class="amber"/><text x="600" y="101" text-anchor="middle" class="l">Local Embeddings</text><text x="600" y="120" text-anchor="middle" class="s">BGE-small baseline</text>
+<rect x="740" y="75" width="190" height="65" class="green"/><text x="835" y="101" text-anchor="middle" class="l">Qdrant Index</text><text x="835" y="120" text-anchor="middle" class="s">Versioned vectors</text>
+<path d="M225 108 L270 108" class="line"/><path d="M460 108 L505 108" class="line"/><path d="M695 108 L740 108" class="line"/>
+<rect x="740" y="230" width="190" height="65" class="blue"/><text x="835" y="256" text-anchor="middle" class="l">Candidate Retrieval</text><text x="835" y="275" text-anchor="middle" class="s">Vector + keyword</text>
+<rect x="505" y="230" width="190" height="65" class="purple"/><text x="600" y="256" text-anchor="middle" class="l">Merge + Rerank</text><text x="600" y="275" text-anchor="middle" class="s">If evaluation helps</text>
+<rect x="270" y="230" width="190" height="65" class="green"/><text x="365" y="256" text-anchor="middle" class="l">Validate + Budget</text><text x="365" y="275" text-anchor="middle" class="s">Auth · provenance · tokens</text>
+<rect x="35" y="230" width="190" height="65" class="amber"/><text x="130" y="256" text-anchor="middle" class="l">Prompt Assembly</text><text x="130" y="275" text-anchor="middle" class="s">Canonical 5 parts</text>
+<path d="M835 140 L835 230" class="line"/><path d="M740 262 L695 262" class="line"/><path d="M505 262 L460 262" class="line"/><path d="M270 262 L225 262" class="line"/>
+<text x="35" y="370" class="s">Controls: source validation, weak-evidence warnings, deduplication and token budgeting.</text><text x="35" y="390" class="s">Embedding changes require re-indexing; retrieval techniques stay only if evaluation shows uplift.</text>
+</svg>

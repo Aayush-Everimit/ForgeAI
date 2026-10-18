@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="950" height="590" viewBox="0 0 950 590">
+<title>ForgeAI Logical Architecture</title><defs><marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#475569"/></marker><style>
+.bg{fill:#f8fafc} .b{fill:#fff;stroke:#334155;stroke-width:1.5;rx:12} .blue{fill:#e0f2fe;stroke:#0284c7;stroke-width:1.5;rx:12} .green{fill:#dcfce7;stroke:#16a34a;stroke-width:1.5;rx:12} .purple{fill:#f3e8ff;stroke:#9333ea;stroke-width:1.5;rx:12} .amber{fill:#fef3c7;stroke:#d97706;stroke-width:1.5;rx:12} .red{fill:#fee2e2;stroke:#dc2626;stroke-width:1.5;rx:12} .t{font:700 20px Arial;fill:#0f172a} .l{font:700 14px Arial;fill:#0f172a} .s{font:12px Arial;fill:#334155} .line{stroke:#475569;stroke-width:1.7;fill:none;marker-end:url(#a)} .dash{stroke:#64748b;stroke-width:1.4;stroke-dasharray:6 5;fill:none;marker-end:url(#a)}
+</style></defs><rect width="100%" height="100%" class="bg"/>
+<text x="30" y="38" class="t">ForgeAI Logical Architecture (Release 0)</text>
+<rect x="35" y="65" width="220" height="65" class="blue"/><text x="145" y="91" text-anchor="middle" class="l">Next.js + TypeScript</text><text x="145" y="111" text-anchor="middle" class="s">Web UI</text>
+<rect x="320" y="65" width="300" height="65" class="green"/><text x="470" y="91" text-anchor="middle" class="l">Node.js + TypeScript API</text><text x="470" y="111" text-anchor="middle" class="s">AuthZ · projects · prompt assembly</text>
+<rect x="690" y="65" width="220" height="65" class="amber"/><text x="800" y="91" text-anchor="middle" class="l">OpenRouter</text><text x="800" y="111" text-anchor="middle" class="s">User key (BYOK)</text>
+<path d="M255 97 L320 97" class="line"/><path d="M620 97 L690 97" class="line"/>
+<rect x="320" y="190" width="300" height="65" class="purple"/><text x="470" y="216" text-anchor="middle" class="l">Python FastAPI RAG</text><text x="470" y="236" text-anchor="middle" class="s">Parsing · embeddings · retrieval</text><path d="M470 130 L470 190" class="line"/>
+<rect x="35" y="320" width="220" height="72" class="green"/><text x="145" y="348" text-anchor="middle" class="l">Neon PostgreSQL</text><text x="145" y="369" text-anchor="middle" class="s">Authoritative data</text>
+<rect x="320" y="320" width="220" height="72" class="blue"/><text x="430" y="348" text-anchor="middle" class="l">Qdrant</text><text x="430" y="369" text-anchor="middle" class="s">Derived vector index</text>
+<rect x="605" y="320" width="220" height="72" class="purple"/><text x="715" y="348" text-anchor="middle" class="l">Redis</text><text x="715" y="369" text-anchor="middle" class="s">Sessions · cache · limits</text>
+<path d="M405 255 L210 320" class="line"/><path d="M470 255 L440 320" class="line"/><path d="M550 255 L700 320" class="dash"/>
+<rect x="320" y="440" width="300" height="65" class="amber"/><text x="470" y="466" text-anchor="middle" class="l">Node.js Background Worker</text><text x="470" y="486" text-anchor="middle" class="s">Durable jobs · reminders · cleanup</text><path d="M320 472 L145 392" class="line"/>
+<text x="30" y="545" class="s">GitHub OAuth is sign-in; GitHub App is separate selected-repository read-only access.</text><text x="30" y="565" class="s">Docker/Compose locally; production services may be split across hosts. Kafka/Kubernetes deferred.</text>
+</svg>

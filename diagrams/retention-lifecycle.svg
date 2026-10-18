@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="850" height="520" viewBox="0 0 850 520">
+<title>Temporary Handoff Lifecycle</title><defs><marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#475569"/></marker><style>
+.bg{fill:#f8fafc} .b{fill:#fff;stroke:#334155;stroke-width:1.5;rx:12} .blue{fill:#e0f2fe;stroke:#0284c7;stroke-width:1.5;rx:12} .green{fill:#dcfce7;stroke:#16a34a;stroke-width:1.5;rx:12} .purple{fill:#f3e8ff;stroke:#9333ea;stroke-width:1.5;rx:12} .amber{fill:#fef3c7;stroke:#d97706;stroke-width:1.5;rx:12} .red{fill:#fee2e2;stroke:#dc2626;stroke-width:1.5;rx:12} .t{font:700 20px Arial;fill:#0f172a} .l{font:700 14px Arial;fill:#0f172a} .s{font:12px Arial;fill:#334155} .line{stroke:#475569;stroke-width:1.7;fill:none;marker-end:url(#a)} .dash{stroke:#64748b;stroke-width:1.4;stroke-dasharray:6 5;fill:none;marker-end:url(#a)}
+</style></defs><rect width="100%" height="100%" class="bg"/>
+<text x="30" y="38" class="t">Temporary Handoff Lifecycle</text>
+<rect x="50" y="80" width="190" height="65" class="blue"/><text x="145" y="106" text-anchor="middle" class="l">Day 0: Create</text><text x="145" y="125" text-anchor="middle" class="s">Expiry = +10 days</text>
+<rect x="330" y="80" width="190" height="65" class="amber"/><text x="425" y="106" text-anchor="middle" class="l">Day 8: Reminder</text><text x="425" y="125" text-anchor="middle" class="s">Active/eligible only</text>
+<rect x="610" y="80" width="190" height="65" class="purple"/><text x="705" y="106" text-anchor="middle" class="l">User decision</text><text x="705" y="125" text-anchor="middle" class="s">Extend or not</text>
+<path d="M240 112 L330 112" class="line"/><path d="M520 112 L610 112" class="line"/>
+<rect x="330" y="230" width="190" height="65" class="green"/><text x="425" y="256" text-anchor="middle" class="l">Extended</text><text x="425" y="275" text-anchor="middle" class="s">New expiry/version</text>
+<rect x="610" y="230" width="190" height="65" class="red"/><text x="705" y="256" text-anchor="middle" class="l">Day 10: Expire</text><text x="705" y="275" text-anchor="middle" class="s">If not extended</text>
+<path d="M665 145 L480 230" class="line"/><text x="550" y="184" class="s">Extend</text><path d="M705 145 L705 230" class="line"/><text x="720" y="190" class="s">No</text>
+<rect x="610" y="365" width="190" height="65" class="amber"/><text x="705" y="391" text-anchor="middle" class="l">Cleanup + Verify</text><text x="705" y="410" text-anchor="middle" class="s">DB · vectors · cache · jobs</text><path d="M705 295 L705 365" class="line"/>
+<rect x="50" y="230" width="190" height="65" class="red"/><text x="145" y="256" text-anchor="middle" class="l">Explicit deletion</text><text x="145" y="275" text-anchor="middle" class="s">Immediate cleanup</text><path d="M145 145 L145 230" class="line"/>
+<text x="30" y="475" class="s">Approved persistent project knowledge has a separate lifecycle and survives handoff expiry.</text><text x="30" y="495" class="s">Backups have a separate retention policy; instant physical backup erasure is not promised.</text>
+</svg>
