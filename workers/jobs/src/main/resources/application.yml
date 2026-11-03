@@ -1,0 +1,57 @@
+server:
+  port: ${WORKER_PORT:4001}
+  shutdown: graceful
+
+spring:
+  application:
+    name: forgeai-worker
+  lifecycle:
+    timeout-per-shutdown-phase: 20s
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/forgeai}
+    username: ${DATABASE_USERNAME:forgeai}
+    password: ${DATABASE_PASSWORD:forgeai}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      probes:
+        enabled: true
+
+forgeai:
+  worker:
+    id: ${WORKER_ID:forgeai-worker}
+    scheduler-enabled: ${WORKER_SCHEDULER_ENABLED:true}
+    poll-interval-ms: ${WORKER_POLL_INTERVAL_MS:2000}
+    stale-check-interval-ms: ${WORKER_STALE_CHECK_INTERVAL_MS:15000}
+    lease-seconds: ${WORKER_LEASE_SECONDS:60}
+    base-backoff-ms: ${WORKER_BASE_BACKOFF_MS:1000}
+  rag:
+    base-url: ${RAG_BASE_URL:http://localhost:8000}
+    internal-token: ${RAG_INTERNAL_TOKEN:local-dev-rag-internal-token}
+    connect-timeout-ms: ${RAG_CONNECT_TIMEOUT_MS:2000}
+    read-timeout-ms: ${RAG_READ_TIMEOUT_MS:5000}
+    max-retries: ${RAG_MAX_RETRIES:2}
+  security:
+    kek-secret: ${FORGEAI_KEK_SECRET:local-dev-kek-secret-change-in-production-32b}
+    kek-key-id: ${FORGEAI_KEK_KEY_ID:kek-v1}
