@@ -93,8 +93,9 @@ export interface ModelDescriptor {
   recommendedFallbackModel: string;
 }
 
-const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:4000";
+// Empty base keeps the browser on the Next.js origin so session and CSRF cookies work.
+// next.config.ts rewrites /api/v1 and /health to the Spring Boot API.
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? "";
 
 function readCsrfCookie(): string | undefined {
   if (typeof document === "undefined") {
@@ -147,17 +148,74 @@ export const forgeAiApi = {
   getGitHubLoginUrl(): string {
     return `${API_BASE_URL}/api/v1/auth/github/login`;
   },
+  getDevLoginUrl(): string {
+    return `${API_BASE_URL}/api/v1/auth/dev/login`;
+  },
   getCurrentUser(): Promise<UserProfile> {
     return apiRequest<UserProfile>("/api/v1/auth/me");
+  },
+  logout(): Promise<void> {
+    return apiRequest<void>("/api/v1/auth/logout", { method: "POST" });
   },
   listProjects(): Promise<Project[]> {
     return apiRequest<Project[]>("/api/v1/projects");
   },
+  createProject(body: {
+    name: string;
+    description?: string;
+    stackMetadata?: Record<string, unknown>;
+  }): Promise<Project> {
+    return apiRequest<Project>("/api/v1/projects", {
+      method: "POST",
+      body: JSON.stringify(body),
+    });
+  },
   listKnowledge(projectId: string): Promise<KnowledgeItem[]> {
     return apiRequest<KnowledgeItem[]>(`/api/v1/projects/${projectId}/knowledge`);
   },
+  createKnowledge(
+    projectId: string,
+    body: {
+      kind: KnowledgeItem["kind"];
+      title: string;
+      content: string;
+      sourceType?: string;
+      autoApprove?: boolean;
+    }
+  ): Promise<KnowledgeItem> {
+    return apiRequest<KnowledgeItem>(`/api/v1/projects/${projectId}/knowledge`, {
+      method: "POST",
+      body: JSON.stringify(body),
+    });
+  },
+  reviewKnowledge(
+    projectId: string,
+    itemId: string,
+    body: { action: "APPROVE" | "REJECT"; reviewNotes?: string }
+  ): Promise<KnowledgeItem> {
+    return apiRequest<KnowledgeItem>(
+      `/api/v1/projects/${projectId}/knowledge/${itemId}/review`,
+      { method: "POST", body: JSON.stringify(body) }
+    );
+  },
   listHandoffs(projectId: string): Promise<Handoff[]> {
     return apiRequest<Handoff[]>(`/api/v1/projects/${projectId}/handoffs`);
+  },
+  createHandoff(
+    projectId: string,
+    body: {
+      task: string;
+      taskType?: string;
+      role?: string;
+      targetModel?: string;
+      contextTokenBudget?: number;
+      executeInference?: boolean;
+    }
+  ): Promise<Handoff> {
+    return apiRequest<Handoff>(`/api/v1/projects/${projectId}/handoffs`, {
+      method: "POST",
+      body: JSON.stringify(body),
+    });
   },
   listModels(): Promise<ModelDescriptor[]> {
     return apiRequest<ModelDescriptor[]>("/api/v1/providers/models");

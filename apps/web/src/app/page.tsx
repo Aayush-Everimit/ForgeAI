@@ -3,6 +3,7 @@ import { forgeAiApi } from "../lib/api";
 
 export default function Home() {
   const loginUrl = forgeAiApi.getGitHubLoginUrl();
+  const demoLoginUrl = forgeAiApi.getDevLoginUrl();
 
   return (
     <div className={styles.page}>
@@ -18,12 +19,15 @@ export default function Home() {
           </p>
         </div>
         <div className={styles.ctas}>
-          <a className={styles.primary} href={loginUrl}>
+          <a className={styles.primary} href={demoLoginUrl}>
+            Enter local demo
+          </a>
+          <a className={styles.secondary} href={loginUrl}>
             Sign in with GitHub OAuth
           </a>
           <a
             className={styles.secondary}
-            href="http://localhost:4000/health"
+            href="/health"
             target="_blank"
             rel="noopener noreferrer"
           >
